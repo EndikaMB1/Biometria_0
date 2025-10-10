@@ -9,11 +9,10 @@
 
     <Button
         android:id="@+id/botonBuscarDispositivosBTLE"
-        android:text="Buscar Dispositivos BTLE nou 4"
-        android:onClick="botonBuscarDispositivosBTLEPulsado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:onClick="botonBuscarDispositivosBTLEPulsado"
+        android:text="Buscar Dispositivos BTLE nou 4" />
 
     <Button
         android:id="@+id/botonDetenerBusquedaDispositivosBTLE"
