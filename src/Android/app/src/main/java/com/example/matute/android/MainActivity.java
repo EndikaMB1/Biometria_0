@@ -1,6 +1,7 @@
 package com.example.matute.android;
 
 // ------------------------------------------------------------------
+//Gestión de la actividad principal:escaneo, detección y control de dispositivos BLE
 // ------------------------------------------------------------------
 
 import android.Manifest;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ScanCallback callbackDelEscaneo = null;
 
     // --------------------------------------------------------------
+    //Busca dispositivos Bluetooth cercanos y muestra la información detectada
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
     private void buscarTodosLosDispositivosBTLE() {
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Muestra por Logcat la información detallada de un dispositivo Bluetooth detectado
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
     private void mostrarInformacionDispositivoBTLE(ScanResult resultado ) {
@@ -127,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Escanea buscando un dispositivo específico por su nombre
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
@@ -171,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Detiene la búsqueda de dispositivos Bluetooth
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
     private void detenerBusquedaDispositivosBTLE() {
@@ -185,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Botón que se encarga de iniciar la búsqueda de todos los dispositivos BTLE
     // --------------------------------------------------------------
     public void botonBuscarDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
@@ -192,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Botón que inicia la busqueda de un dispositivo BTLE específico
     // --------------------------------------------------------------
     public void botonBuscarNuestroDispositivoBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton nuestro dispositivo BTLE Pulsado" );
@@ -203,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Botón que se encarga de pausar la busqueda de dispositivos BTLE
     // --------------------------------------------------------------
     public void botonDetenerBusquedaDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton detener busqueda dispositivos BTLE Pulsado" );
@@ -210,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    //Inicializa Bluetooth y solicita permisos si son necesarios
     // --------------------------------------------------------------
     @SuppressLint("MissingPermission")
     private void inicializarBlueTooth() {
@@ -255,6 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // --------------------------------------------------------------
+    //Metodo principal al crear la actividad
     // --------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -270,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
     } // onCreate()
 
     // --------------------------------------------------------------
+    //Resultado de la petición de permisos
     // --------------------------------------------------------------
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {

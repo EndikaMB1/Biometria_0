@@ -5,6 +5,7 @@ import java.util.Arrays;
 // -----------------------------------------------------------------------------------
 // @author: Jordi Bataller i Mascarell
 // -----------------------------------------------------------------------------------
+//Esta clase interpreta los bytes de una trama iBeacon y separa sus campos
 public class TramaIBeacon {
     private byte[] prefijo = null; // 9 bytes
     private byte[] uuid = null; // 16 bytes
@@ -21,6 +22,7 @@ public class TramaIBeacon {
     private byte iBeaconLength = 0 ; // 1 byte
 
     // -------------------------------------------------------------------------------
+    //Todos estos metodos getters devuelven las distintas partes de la trama
     // -------------------------------------------------------------------------------
     public byte[] getPrefijo() {
         return prefijo;
@@ -87,6 +89,7 @@ public class TramaIBeacon {
     }
 
     // -------------------------------------------------------------------------------
+    //Constructor que recibe la trama completa y extrae sus partes(UUID,major,minor, e.t.c)
     // -------------------------------------------------------------------------------
     public TramaIBeacon(byte[] bytes ) {
         this.losBytes = bytes;
