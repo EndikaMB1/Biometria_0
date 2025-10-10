@@ -8,9 +8,11 @@ import java.util.UUID;
 // -----------------------------------------------------------------------------------
 // @author: Jordi Bataller i Mascarell
 // -----------------------------------------------------------------------------------
+//Esta clase contiene funciones de conversión entre tipos de datos(bytes,UUID,e.t.c)
 public class Utilidades {
 
     // -------------------------------------------------------------------------------
+    //Convierte un String en un array de bytes
     // -------------------------------------------------------------------------------
     public static byte[] stringToBytes ( String texto ) {
         return texto.getBytes();
@@ -18,6 +20,7 @@ public class Utilidades {
     } // ()
 
     // -------------------------------------------------------------------------------
+    //Convierte un String de 16 caracteres en un UUID(dividiéndolo en dos partes)
     // -------------------------------------------------------------------------------
     public static UUID stringToUUID( String uuid ) {
         if ( uuid.length() != 16 ) {
@@ -37,18 +40,21 @@ public class Utilidades {
     } // ()
 
     // -------------------------------------------------------------------------------
+    //Convierte un UUID a un String legible
     // -------------------------------------------------------------------------------
     public static String uuidToString ( UUID uuid ) {
         return bytesToString( dosLongToBytes( uuid.getMostSignificantBits(), uuid.getLeastSignificantBits() ) );
     } // ()
 
     // -------------------------------------------------------------------------------
+    //Convierte un UUID a su representación hexadecimal
     // -------------------------------------------------------------------------------
     public static String uuidToHexString ( UUID uuid ) {
         return bytesToHexString( dosLongToBytes( uuid.getMostSignificantBits(), uuid.getLeastSignificantBits() ) );
     } // ()
 
     // -------------------------------------------------------------------------------
+    //Convierte un array de bytes en String(mostrando cada byte como carácter)
     // -------------------------------------------------------------------------------
     public static String bytesToString( byte[] bytes ) {
         if (bytes == null ) {
@@ -63,6 +69,7 @@ public class Utilidades {
     }
 
     // -------------------------------------------------------------------------------
+    //Combina dos Long en un array de bytes
     // -------------------------------------------------------------------------------
     public static byte[] dosLongToBytes( long masSignificativos, long menosSignificativos ) {
         ByteBuffer buffer = ByteBuffer.allocate( 2 * Long.BYTES );
@@ -72,18 +79,21 @@ public class Utilidades {
     }
 
     // -------------------------------------------------------------------------------
+    //Convierte bytes en enteros
     // -------------------------------------------------------------------------------
     public static int bytesToInt( byte[] bytes ) {
         return new BigInteger(bytes).intValue();
     }
 
     // -------------------------------------------------------------------------------
+    //Convierte bytes a número largo
     // -------------------------------------------------------------------------------
     public static long bytesToLong( byte[] bytes ) {
         return new BigInteger(bytes).longValue();
     }
 
     // -------------------------------------------------------------------------------
+    //Convierte bytes a entero controlando el número de bytes
     // -------------------------------------------------------------------------------
     public static int bytesToIntOK( byte[] bytes ) {
         if (bytes == null ) {
@@ -122,6 +132,7 @@ public class Utilidades {
     } // ()
 
     // -------------------------------------------------------------------------------
+    //Convierte un array de bytes a formato hexadecimal, ej:(4a:1f:b3:")
     // -------------------------------------------------------------------------------
     public static String bytesToHexString( byte[] bytes ) {
 
