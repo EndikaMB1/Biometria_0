@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Última Medición BLE</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: Consolas, "Courier New", monospace;
+      text-align: center;
+      padding-top: 60px;
+    }
+    #panel {
+      display: inline-block;
+      padding: 25px 40px;
+      border: 2px solid #00bcd4;
+      border-radius: 12px;
+      background-color: #1e1e1e;
+      box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+      transition: all 0.3s ease-in-out;
+    }
+    #panel:hover {
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.7);
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #00bcd4;
+    }
+    b {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div id="panel">
+    <h2>Última Medición BLE</h2>
+    <p id="contenido">Conectando...</p>
+  </div>
+
+  <script>
+    async function actualizar() {
+      try {
+        const res = await fetch("get_ultima.php");
+        const data = await res.json();
+
+        const m = data.ultima_medicion;
+        document.getElementById("contenido").innerHTML =
+          `Dispositivo: <b>${m.dispositivo_id}</b><br>
+           CO₂: <b>${m.Vgas}</b><br>
+           Temperatura: <b>${m.Vtemp}</b><br>
+           Fecha: <b>${m.fecha}</b>`;
+      } catch (err) {
+        document.getElementById("contenido").innerText = "Error al obtener datos.";
+      }
+    }
+    setInterval(actualizar, 3000);
+    actualizar();
+  </script>
+</body>
+</html>
