@@ -1,36 +1,24 @@
 <?php
 // ----------------------------------------------------------
 // Archivo: get_ultima.php
-// Para devolver la última medición guardada en la BD
+// Devuelve la última medición registrada en formato JSON
 // ----------------------------------------------------------
 
+require_once "config.php";
+require_once "logicaNegocio.php";
+
 header('Content-Type: application/json; charset=utf-8');
-header('Access-Control-Allow-Origin: *'); 
 
-require_once "logicaNegocio.php"; 
 try {
-    // ------------------------------------------------------
-    // 1. Crear objeto de la lógica de negocio
-    // ------------------------------------------------------
     $logica = new LogicaNegocio($pdo);
+    $resultado = $logica->dondeUltimaMedicion();
 
-    // ------------------------------------------------------
-    // 2. Obtener la última medición
-    // ------------------------------------------------------
-    $ultima = $logica->dondeUltimaMedicion();
-
-    // ------------------------------------------------------
-    // 3. Devolver los datos como JSON
-    // ------------------------------------------------------
-    echo json_encode([
-        "status" => "ok",
-        "ultima_medicion" => $ultima
-    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    echo json_encode($resultado, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
 } catch (Exception $e) {
     echo json_encode([
         "status" => "error",
-        "message" => "Error al obtener la última medición: " . $e->getMessage()
+        "message" => "Error general: " . $e->getMessage()
     ]);
 }
 ?>
