@@ -6,9 +6,9 @@
 
 // Datos de conexión 
 $host = "localhost";
-$dbname = "biometria_db";
-$username = "root";
-$password = "";  
+$dbname = "Biometria";
+$username = "Endika";
+$password = "holaMundo";  
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
