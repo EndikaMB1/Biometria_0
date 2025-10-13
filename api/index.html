@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Última Medición BLE</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #eee;
+      font-family: "Segoe UI", Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #00bfff;
+      text-shadow: 0 0 10px #00bfff88;
+      margin-bottom: 20px;
+    }
+
+    #card {
+      background-color: #222;
+      border: 2px solid #00bfff;
+      border-radius: 15px;
+      padding: 25px 40px;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+      text-align: left;
+      min-width: 320px;
+    }
+
+    .dato {
+      font-size: 1.1em;
+      margin: 8px 0;
+    }
+
+    .etiqueta {
+      color: #aaa;
+    }
+
+    b {
+      color: #fff;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>Última Medición BLE</h1>
+  <div id="card">
+    <p class="dato"><span class="etiqueta">Dispositivo:</span> <b id="disp">Cargando...</b></p>
+    <p class="dato"><span class="etiqueta">Tipo de medición:</span> <b id="tipo">Cargando...</b></p>
+    <p class="dato"><span class="etiqueta">Valor:</span> <b id="valor">Cargando...</b></p>
+    <p class="dato"><span class="etiqueta">Nº de medición:</span> <b id="num">Cargando...</b></p>
+    <p class="dato"><span class="etiqueta">Fecha:</span> <b id="fecha">Cargando...</b></p>
+  </div>
+
+  <footer>Biometría BLE - GTI3A</footer>
+
+  <script>
+    async function actualizar() {
+      try {
+        const res = await fetch("get_ultima.php");
+        const data = await res.json();
+
+        if (data.status === "ok" && data.ultima_medicion) {
+          const u = data.ultima_medicion;
+          document.getElementById("disp").innerText = u.dispositivo_id || "Desconocido";
+          document.getElementById("tipo").innerText =
+            u.tipo_medicion == 11 ? "CO₂" :
+            u.tipo_medicion == 12 ? "Temperatura" :
+            "Otro";
+          document.getElementById("valor").innerText = u.medicion;
+          document.getElementById("num").innerText = u.numero_medicion;
+          document.getElementById("fecha").innerText = u.fecha;
+        } else {
+          document.getElementById("disp").innerText = "Sin datos";
+          document.getElementById("tipo").innerText = "-";
+          document.getElementById("valor").innerText = "-";
+          document.getElementById("num").innerText = "-";
+          document.getElementById("fecha").innerText = "-";
+        }
+
+      } catch (e) {
+        document.getElementById("disp").innerText = "Error de conexión";
+        document.getElementById("tipo").innerText = "-";
+        document.getElementById("valor").innerText = "-";
+        document.getElementById("num").innerText = "-";
+        document.getElementById("fecha").innerText = "-";
+      }
+    }
+
+    setInterval(actualizar, 3000);
+    actualizar();
+  </script>
+</body>
+</html>
