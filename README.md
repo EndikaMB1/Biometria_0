@@ -1,108 +1,101 @@
-proyecto:
-  nombre: "Proyecto GTI 3A - Endika Matute"
-  autor: "Endika Matute Blanco"
-  grado: "GTI 3A - Universitat Politècnica de València"
-  descripcion: |
-    Proyecto de comunicación BLE entre una placa SparkFun (Arduino), 
-    una aplicación Android y una API REST en PHP.
-    El sistema emite mediciones simuladas (CO₂ y temperatura) desde la placa,
-    que son recibidas por la app Android y enviadas al servidor mediante JSON.
-    Finalmente, los datos se almacenan en una base de datos MySQL y se muestran 
-    en una página web.
+# Proyecto GTI 3A - Endika Matute
 
-  estructura:
-    - src/arduino: "Código C++ para la placa SparkFun (emisor BLE)"
-    - src/android: "Código Java para Android Studio (receptor BLE)"
-    - api/: "Lógica del backend PHP y conexión con MySQL"
-    - html/: "Visualización web de la última medición"
-    - tests/: "Scripts de prueba automáticos (PHP)"
-    - doc/: "Documentación, diagramas y esquemas"
-    - README.md: "Explicación general del proyecto"
+## Descripción del proyecto
+Este proyecto implementa un sistema IoT sencillo basado en **beacons BLE**.  
+El objetivo es poder **emitir mediciones desde una placa SparkFun (Arduino)** y **recibirlas en una app Android**, que a su vez las envía a una **API REST en PHP** para almacenarlas en una **base de datos MySQL**.
 
-  funcionamiento:
-    emisor:
-      descripcion: |
-        El emisor BLE (SparkFun) usa la librería Bluefruit para mandar beacons 
-        con datos de medición. Alterna entre dos tipos:
-          - Major = 11 → CO₂
-          - Major = 12 → Temperatura
-        Los valores medidos (minor) se envían junto con un identificador de dispositivo.
-    receptor:
-      descripcion: |
-        La app Android detecta beacons cercanos. Al encontrar el configurado (por nombre),
-        envía su información al servidor con una petición HTTP POST (JSON).
-    servidor:
-      descripcion: |
-        El backend PHP recibe los datos, los guarda en la base de datos y permite 
-        consultarlos mediante una API REST. Incluye una página HTML para ver 
-        la última medición en tiempo real.
+De esta forma se puede comprobar cómo se comunican distintos entornos (C++, Java, PHP y SQL) dentro de un sistema distribuido.
 
-  base_de_datos:
-    nombre: "Biometria"
-    gestor: "MySQL (phpMyAdmin en Plesk UPV)"
-    tabla: "mediciones"
-    campos:
-      - id: "INT AUTO_INCREMENT PRIMARY KEY"
-      - tipo_medicion: "INT (11=CO₂, 12=Temperatura)"
-      - medicion: "FLOAT (valor de la medición)"
-      - numero_medicion: "INT (contador de la emisión)"
-      - fecha: "DATETIME"
-      - dispositivo_id: "VARCHAR(50)"
-    ejemplo_fila:
-      id: 18
-      tipo_medicion: 11
-      medicion: 235
-      numero_medicion: 4
-      fecha: "2025-10-13 18:45:12"
-      dispositivo_id: "prueba21"
+---
 
-  api_rest:
-    endpoints:
-      - nombre: "POST /api/post_mediciones.php"
-        descripcion: "Guarda una nueva medición"
-        ejemplo_entrada: |
-          {
-            "tipo_medicion": 11,
-            "medicion": 235,
-            "numero_medicion": 4,
-            "dispositivo_id": "prueba21"
-          }
-        ejemplo_respuesta: |
-          {
-            "status": "ok",
-            "message": "Medición guardada correctamente"
-          }
-      - nombre: "GET /api/get_ultima.php"
-        descripcion: "Devuelve la última medición guardada"
-        ejemplo_respuesta: |
-          {
-            "status": "ok",
-            "ultima_medicion": {
-              "tipo_medicion": 12,
-              "medicion": -12,
-              "numero_medicion": 4,
-              "fecha": "2025-10-13 18:45:12",
-              "dispositivo_id": "prueba21"
-            }
-          }
+## Funcionamiento general
 
+### Emisor (Arduino + SparkFun)
+- La placa SparkFun emite beacons BLE usando la librería **Bluefruit**.  
+- Cada beacon contiene:
+  - Un valor de CO₂ (`major = 11`)  
+  - Un valor de temperatura (`major = 12`)  
+  - Un identificador de dispositivo (`dispositivo_id`)  
+  - Un número de medición (`minor`)
 
+El dispositivo emite alternando las dos mediciones (CO₂ y temperatura) de forma periódica.
 
-         
+### Receptor (Aplicación Android)
+- Detecta todos los beacons cercanos o solo el dispositivo configurado (“nuestro beacon”).  
+- Si detecta el beacon del proyecto, **envía los datos (major, minor, dispositivo)** al servidor mediante una **petición HTTP POST** con formato **JSON**.  
+- También permite detener o iniciar el escaneo con distintos botones.
 
-  tecnologias:
-    - Arduino IDE
-    - Android Studio (Java)
-    - PHP 8
-    - MySQL + phpMyAdmin
-    - Plesk (UPV)
-    - HTML + CSS + JavaScript
-    - BLE (Bluetooth Low Energy)
+### Servidor Web (API REST + Base de datos)
+- La API REST está hecha en **PHP**, con los siguientes archivos:
+  - `post_mediciones.php` → recibe los datos desde Android y los guarda.
+  - `get_ultima.php` → devuelve la última medición guardada.
+- Las operaciones con la base de datos se gestionan desde `logicaNegocio.php`, que contiene los métodos:
+  - `guardarMedicion()`  
+  - `dondeUltimaMedicion()`
 
-  ejecucion:
-    pasos:
-      - "Encender la placa SparkFun (beacon 'Endika')."
-      - "Abrir la app Android y pulsar 'Buscar nuestro dispositivo'."
-      - "El móvil envía los datos al servidor PHP."
-      - "Consultar la web https://ematbla.upv.edu.es/html/index.html para ver los resultados."
-      - "Comprobar en phpMyAdmin que la base de datos se actualiza correctamente."
+La base de datos está alojada en **Plesk (UPV)** y gestionada con **phpMyAdmin**.
+
+---
+
+## Estructura del proyecto
+
+GTI3A-Endika-Matute/
+│
+├── src/ # Código fuente principal
+│ ├── arduino/ # Código C++ para la placa SparkFun
+│ └── android/ # Proyecto Android (Java)
+│
+├── api/ # Archivos PHP de la API REST
+│ ├── post_mediciones.php
+│ ├── get_ultima.php
+│ ├── logicaNegocio.php
+│ └── config.php
+│
+├── html/ # Página web para visualizar la última medición
+│ └── index.html
+│
+├── tests/ # Scripts de prueba automáticos
+│ ├── test_logica.php
+│ └── test_api.php
+│
+├── doc/ # Documentación, diagramas y diseño
+│
+└── README.md # Este archivo
+
+Tests automáticos
+1️test_logica.php
+
+Comprueba el funcionamiento de la lógica de negocio PHP sin pasar por la API.
+Guarda una medición y muestra la última guardada.
+
+2️test_api.php
+
+Simula una petición POST y una GET a la API REST.
+Permite verificar que las peticiones funcionan sin usar la app Android.
+
+Tecnologías usadas
+
+Arduino C++
+
+Android Studio (Java)
+
+PHP 8 + MySQL
+
+phpMyAdmin / Plesk (UPV)
+
+HTML + CSS (interfaz web)
+
+BLE (Bluetooth Low Energy)
+
+Cómo probar el sistema completo:
+
+1.Encender la placa SparkFun (emite el beacon prueba21).
+
+2.Abrir la app Android y pulsar “Buscar nuestro dispositivo”.
+
+3.Al detectar el beacon, la app envía la medición al servidor.
+
+4.Entrar en la web:
+https://ematbla.upv.edu.es/html/index.html
+y comprobar que aparecen los valores actualizados.
+
