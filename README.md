@@ -96,6 +96,13 @@ Cómo probar el sistema completo:
 3.Al detectar el beacon, la app envía la medición al servidor.
 
 4.Entrar en la web:
-https://ematbla.upv.edu.es/html/index.html
+https://ematbla.upv.edu.es/api/index.html
 y comprobar que aparecen los valores actualizados.
+
+Otros links a tener en cuenta:
+https://ematbla.upv.edu.es/api/get_ultima.php
+https://ematbla.upv.edu.es/api/ping.php
+https://ematbla.upv.edu.es/api/test_api.php
+https://ematbla.upv.edu.es/api/test_logica.php
+
 
