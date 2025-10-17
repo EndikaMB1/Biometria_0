@@ -1,6 +1,7 @@
 package com.example.matute.android;
 
 // ------------------------------------------------------------------
+//Gestión de la actividad principal: escaneo, detección y envío BLE
 // ------------------------------------------------------------------
 
 import android.Manifest;
@@ -29,11 +30,13 @@ import java.util.List;
 import java.util.UUID;
 
 // ------------------------------------------------------------------
+// Clase principal: controla el escaneo BLE y el envío de datos
 // ------------------------------------------------------------------
 
 public class MainActivity extends AppCompatActivity {
 
     // --------------------------------------------------------------
+    // Variables globales y configuración
     // --------------------------------------------------------------
     private static final String ETIQUETA_LOG = ">>>>";
 
@@ -45,13 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ScanCallback callbackDelEscaneo = null;
 
+    // Control de envío para evitar duplicados
     private int ultimoNumeroMedicion = -1;
 
+    // tiempo del último envío (ms)
     private long ultimoEnvioTiempo = 0;
 
 
 
     // --------------------------------------------------------------
+    // Escanea todos los dispositivos BLE y muestra su información
     // --------------------------------------------------------------
     private void buscarTodosLosDispositivosBTLE() {
         Log.d(ETIQUETA_LOG, " buscarTodosLosDispositivosBTL(): empieza ");
@@ -89,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    // Muestra la información de un dispositivo BLE detectado
     // --------------------------------------------------------------
     private void mostrarInformacionDispositivoBTLE( ScanResult resultado ) {
 
@@ -149,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 con.setRequestProperty("Content-Type", "application/json; utf-8");
                 con.setDoOutput(true);
 
+                // Construcción del JSON con los valores a enviar
                 String jsonInputString = "{"
                         + "\"tipo_medicion\": " + tipoMedicion + ", "
                         + "\"medicion\": " + medicion + ", "
@@ -184,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // --------------------------------------------------------------
+    // Escanea buscando un dispositivo específico (el nuestro)
     // --------------------------------------------------------------
     private void buscarEsteDispositivoBTLE(final String dispositivoBuscado ) {
         Log.d(ETIQUETA_LOG, " buscarEsteDispositivoBTLE(): empieza ");
@@ -215,6 +224,8 @@ public class MainActivity extends AppCompatActivity {
 
                 int tipo_medicion = (major >> 8);
                 int numero_medicion = (major & 0xFF);
+
+                // Control para evitar envíos repetidos o demasiado rápidos
 
                 long ahora = System.currentTimeMillis();
                 // Solo enviar si el número ha cambiado o ha pasado al menos 1 segundo
@@ -257,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    // Detiene la búsqueda BLE
     // --------------------------------------------------------------
     private void detenerBusquedaDispositivosBTLE() {
 
@@ -270,6 +282,8 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    // Botones UI: asignan las acciones de búscar dispositivos,
+    // un dispositivo en concreto, y pausar busqueda.
     // --------------------------------------------------------------
     public void botonBuscarDispositivosBTLEPulsado( View v ) {
         Log.d(ETIQUETA_LOG, " boton buscar dispositivos BTLE Pulsado" );
@@ -295,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
     } // ()
 
     // --------------------------------------------------------------
+    // Inicializa el Bluetooth y solicita permisos si es necesario
     // --------------------------------------------------------------
     private void inicializarBlueTooth() {
         Log.d(ETIQUETA_LOG, " inicializarBlueTooth(): obtenemos adaptador BT ");
@@ -339,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // --------------------------------------------------------------
+    // onCreate(): se ejecuta al iniciar la actividad principal
     // --------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -354,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
     } // onCreate()
 
     // --------------------------------------------------------------
+    // Manejo del resultado de los permisos de Bluetooth
     // --------------------------------------------------------------
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
